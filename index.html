@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a3a5c" />
+  <meta name="description" content="School Timetable Manager - Class 6 to 10" />
+  <title>School Timetable Manager</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-icon">📚</div>
+        <div class="brand-text">
+          <h1>School Timetable</h1>
+          <span>Class 6 – 10 Manager</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="printTimetable()" title="Print">🖨️ Print</button>
+        <button class="btn btn-primary" onclick="openAddModal()" title="Add Entry">＋ Add Entry</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Class Selector Tabs -->
+  <div class="class-tabs-wrap">
+    <div class="class-tabs" id="classTabs">
+      <button class="tab-btn active" data-class="6" onclick="switchClass(6)">Class 6</button>
+      <button class="tab-btn" data-class="7" onclick="switchClass(7)">Class 7</button>
+      <button class="tab-btn" data-class="8" onclick="switchClass(8)">Class 8</button>
+      <button class="tab-btn" data-class="9" onclick="switchClass(9)">Class 9</button>
+      <button class="tab-btn" data-class="10" onclick="switchClass(10)">Class 10</button>
+    </div>
+  </div>
+
+  <!-- Class Info Bar -->
+  <div class="class-info-bar" id="classInfoBar">
+    <div class="info-item">
+      <span class="info-label">📋 Class Incharge</span>
+      <span class="info-value" id="displayIncharge">—</span>
+      <button class="icon-btn" onclick="editClassInfo()">✏️</button>
+    </div>
+    <div class="info-item">
+      <span class="info-label">🗓️ Date</span>
+      <span class="info-value" id="displayDate">—</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">🕐 Updated</span>
+      <span class="info-value" id="displayTime">—</span>
+    </div>
+  </div>
+
+  <!-- Main Timetable Area -->
+  <main class="main-content">
+    <div class="timetable-container" id="timetableContainer">
+      <div class="timetable-scroll">
+        <table class="timetable" id="timetableTable">
+          <thead>
+            <tr>
+              <th class="col-period">Period / Day</th>
+              <th class="col-day">Monday</th>
+              <th class="col-day">Tuesday</th>
+              <th class="col-day">Wednesday</th>
+              <th class="col-day">Thursday</th>
+              <th class="col-day">Friday</th>
+              <th class="col-day">Saturday</th>
+              <th class="col-actions no-print">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody">
+            <!-- JS Generated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon">📅</div>
+      <h3>No Timetable Yet</h3>
+      <p>Click <strong>+ Add Entry</strong> to start building the timetable for this class.</p>
+    </div>
+  </main>
+
+  <!-- ===================== MODALS ===================== -->
+
+  <!-- Add/Edit Entry Modal -->
+  <div class="modal-backdrop" id="addModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Timetable Entry</h2>
+        <button class="modal-close" onclick="closeModal('addModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Period</label>
+            <select id="formPeriod">
+              <option value="Assembly">🔔 Assembly</option>
+              <option value="Period 1">Period 1</option>
+              <option value="Period 2">Period 2</option>
+              <option value="Period 3">Period 3</option>
+              <option value="Period 4">Period 4</option>
+              <option value="Period 5">Period 5</option>
+              <option value="Period 6">Period 6</option>
+              <option value="Break">☕ Break</option>
+              <option value="Period 7">Period 7</option>
+              <option value="Period 8">Period 8</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Day</label>
+            <select id="formDay">
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option value="All">All Days</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" id="formSubject" placeholder="e.g. Mathematics" />
+          </div>
+          <div class="form-group">
+            <label>Teacher Name</label>
+            <input type="text" id="formTeacher" placeholder="e.g. Mr. Ahmed" />
+          </div>
+          <div class="form-group">
+            <label>Start Time</label>
+            <input type="time" id="formStartTime" />
+          </div>
+          <div class="form-group">
+            <label>End Time</label>
+            <input type="time" id="formEndTime" />
+          </div>
+          <div class="form-group">
+            <label>Room / Section</label>
+            <input type="text" id="formRoom" placeholder="e.g. Room 12 / Section A" />
+          </div>
+          <div class="form-group">
+            <label>Note (optional)</label>
+            <input type="text" id="formNote" placeholder="Any special note..." />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('addModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEntry()">💾 Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Class Info Edit Modal -->
+  <div class="modal-backdrop" id="classInfoModal" style="display:none;">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2>Edit Class Info</h2>
+        <button class="modal-close" onclick="closeModal('classInfoModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Class Incharge Name</label>
+          <input type="text" id="inchargeInput" placeholder="e.g. Mrs. Fatima Khan" />
+        </div>
+        <div class="form-group">
+          <label>School / Institution Name</label>
+          <input type="text" id="schoolInput" placeholder="e.g. Government High School" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('classInfoModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveClassInfo()">💾 Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div class="modal-backdrop" id="deleteModal" style="display:none;">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2>Confirm Delete</h2>
+        <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-text">Are you sure you want to delete this timetable entry? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('deleteModal')">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">🗑️ Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Print Header (only visible in print) -->
+  <div class="print-header" id="printHeader">
+    <div class="print-school" id="printSchool"></div>
+    <div class="print-title" id="printTitle"></div>
+    <div class="print-meta" id="printMeta"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
