@@ -1,0 +1,42 @@
+{
+  "name": "School Timetable Manager",
+  "short_name": "Timetable",
+  "description": "Professional school timetable manager for Class 6 to 10 with full CRUD, print, and offline support.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f2240",
+  "theme_color": "#1a3a5c",
+  "orientation": "any",
+  "scope": "./",
+  "lang": "en",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Class 6 Timetable",
+      "short_name": "Class 6",
+      "description": "View Class 6 timetable",
+      "url": "./index.html?class=6"
+    },
+    {
+      "name": "Class 10 Timetable",
+      "short_name": "Class 10",
+      "description": "View Class 10 timetable",
+      "url": "./index.html?class=10"
+    }
+  ]
+}
